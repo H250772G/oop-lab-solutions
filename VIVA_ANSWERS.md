@@ -1,0 +1,16 @@
+# Viva Answers (Appendix B of the manual)
+
+Short, accurate answers you can say aloud. Add your own example from your code for each one.
+
+1. **Class vs object; where in memory?** A class is a blueprint (fields + methods); an object is one instance of it. Objects live on the heap. A variable such as `Student s` holds a reference (an address) to the object. The class's metadata is loaded once by the JVM.
+2. **Why no multiple inheritance of classes?** Two parents could supply conflicting fields or method bodies (the diamond problem). Interfaces avoid it because they carry no instance state; if two defaults clash, the class must resolve it with `InterfaceName.super.method()`.
+3. **Overloading vs overriding.** Overloading: same name, different parameter lists, in one class, chosen at compile time (`add(int,int)` / `add(double,double)`). Overriding: subclass redefines an inherited method with the same signature, chosen at run time from the real object (`Circle.area()`).
+4. **Superclass has no no-arg constructor and the subclass omits `super(...)`?** Compile error. The compiler inserts `super()`, which does not exist. Fix: call `super(args)` explicitly as the first statement, or add a no-arg constructor to the parent.
+5. **Abstract class vs interface?** Choose an abstract class when related classes share state or code (`LibraryItem`). Choose an interface for a capability that unrelated classes can have (`Flyable`, `Comparable`). A class extends one class but implements many interfaces.
+6. **Why override `hashCode` with `equals`?** The contract says equal objects must have equal hash codes. Hash collections find a bucket by hash first; if equal objects hash differently they land in different buckets and duplicates appear (`BookSet.java` shows it).
+7. **Checked vs unchecked exceptions.** Checked (subclasses of `Exception` but not `RuntimeException`) must be caught or declared: `IOException`, `SQLException`. Unchecked (`RuntimeException`) are usually bugs: `NullPointerException`, `IllegalArgumentException`.
+8. **Generics and primitives; type erasure?** Type parameters are erased to their bounds (usually `Object`) after compile-time checking, so they must be reference types; primitives use wrappers (`Integer`) via autoboxing. Erasure is why `int[]` cannot be passed as `T[]`.
+9. **`final`.** Variable: assigned once. Method: cannot be overridden. Class: cannot be extended (`String`, immutable classes).
+10. **Dynamic dispatch; why fields/static methods are not polymorphic?** The JVM picks the method from the object's actual class at run time. Fields and static methods are bound at compile time to the declared type of the variable, so a field in a subclass hides rather than overrides (`FieldVsMethod.java`).
+11. **Functional interface and lambda.** A functional interface has exactly one abstract method (`Predicate`, `Comparator`). A lambda is a compact implementation of that single method; the compiler infers which interface from the context.
+12. **try-with-resources vs try/finally.** Resources implementing `AutoCloseable` are closed automatically, in reverse order, even on exceptions, and exceptions from `close()` are attached as suppressed rather than hiding the original error. Less code, fewer leaks.
